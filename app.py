@@ -1,13 +1,18 @@
-from fastapi import FastAPI, Request
+# from fastapi import FastAPI, Request
 
-app = FastAPI()
+# app = FastAPI()
+
+from flask import Flask, request
+
+
+app = Flask(__name__)
 
 #mendapatkan data artikel dari api
 import requests
 import json
 import pandas as pd
 
-response = requests.get('https://nuha-restapi.000webhostapp.com/api/video')
+response = requests.get('https://nuha.my.id/api/video')
 data = response.text
 parse_json = json.loads(data)
 data_dict = parse_json['data']
@@ -106,9 +111,15 @@ tfidf_matrix = vectorizer.fit_transform(documents)
 # Menghitung matrix cosine similarity 
 cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix) 
 
-@app.get('/recommend/video')
-def get_recommendation(request: Request) :
-    id = int(request.query_params.get("id"))
+# @app.get('/recommend/video')
+@app.route('/video')
+def hello():
+    return 'video recommender sudah siap!'
+
+# @app.get('/recommend/video')
+@app.route('/recommend/video')
+def get_recommendation() :
+    id = int(request.args.get('id'))
     id -= 1
     sim_score = enumerate(cosine_sim[id])
     sim_score = sorted(sim_score, key=lambda x: x[1], reverse=True)
