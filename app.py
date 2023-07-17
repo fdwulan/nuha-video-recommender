@@ -1,18 +1,18 @@
-# from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request
 
-# app = FastAPI()
+app = FastAPI()
 
-from flask import Flask, request
+# from flask import Flask, request
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 #mendapatkan data artikel dari api
 import requests
 import json
 import pandas as pd
 
-response = requests.get('https://nuha.my.id/api/video')
+response = requests.get('https://nuha.my.id/api/video/allData')
 data = response.text
 parse_json = json.loads(data)
 data_dict = parse_json['data']
@@ -112,12 +112,12 @@ tfidf_matrix = vectorizer.fit_transform(documents)
 cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix) 
 
 # @app.get('/recommend/video')
-@app.route('/video')
-def hello():
-    return 'video recommender sudah siap!'
+# @app.route('/video')
+# def hello():
+#     return 'video recommender sudah siap!'
 
-# @app.get('/recommend/video')
-@app.route('/recommend/video')
+@app.get('/recommend/video')
+# @app.route('/recommend/video')
 def get_recommendation() :
     id = int(request.args.get('id'))
     id -= 1
